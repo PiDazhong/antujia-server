@@ -1,11 +1,12 @@
 {
-  "name": "saudi-server",
+  "name": "antujia-server",
   "version": "1.0.0",
   "description": "File management server",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "ANTUJIA_DIR=./data nodemon app.js",
+    "dev:win": "set ANTUJIA_DIR=.\\data&& nodemon app.js",
     "build": "node postbuildService.js",
     "commit": "npm run build && git add . && git commit -m \"feat: server开发\" && git push origin main"
   },

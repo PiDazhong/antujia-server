@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 saudi/*
+
+# Local debug data
+data

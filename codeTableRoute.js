@@ -94,15 +94,50 @@ router.post('/save', (req, res) => {
     if (item.value === undefined) {
       return res.status(400).json({ success: false, code: 0, message: 'value is required for all items' });
     }
+    const existing = table[item.code];
+    let sort;
+    if (typeof item.sort === 'number') {
+      sort = item.sort;
+    } else if (existing) {
+      // 更新已有条目且未传 sort，保留原值
+      sort = existing.sort;
+    } else {
+      // 新建条目且未传 sort，排到末尾
+      sort = Object.values(table).reduce((max, e) => (e.sort > max ? e.sort : max), 0) + 1;
+    }
     table[item.code] = {
       value: item.value,
       desc: item.desc !== undefined ? item.desc : '',
-      sort: typeof item.sort === 'number' ? item.sort : 0
+      sort
     };
   }
   writeCodeTable(table);
 
   res.json({ success: true, code: 1, message: 'Saved successfully' });
+});
+
+// 排序：按 codes 数组顺序重排码表，并重算 sort 为 1..n
+router.post('/sort', (req, res) => {
+  const { codes } = req.body;
+  if (!Array.isArray(codes)) {
+    return res.status(400).json({ success: false, code: 0, message: 'codes must be an array' });
+  }
+
+  const table = readCodeTable();
+  const orderMap = new Map(codes.map((code, index) => [code, index]));
+  const sorted = Object.entries(table).sort(([a], [b]) => {
+    const ia = orderMap.has(a) ? orderMap.get(a) : Number.MAX_SAFE_INTEGER;
+    const ib = orderMap.has(b) ? orderMap.get(b) : Number.MAX_SAFE_INTEGER;
+    return ia - ib;
+  });
+
+  sorted.forEach(([code, entry], index) => {
+    table[code] = { value: entry.value, desc: entry.desc, sort: index + 1 };
+  });
+  writeCodeTable(table);
+
+  const data = sorted.map(([code]) => entryToResponse(code, table[code]));
+  res.json({ success: true, code: 1, message: 'Sorted successfully', data });
 });
 
 // 删除码表
@@ -118,10 +153,16 @@ router.post('/delete', (req, res) => {
   }
 
   delete table[code];
+  // 剩余条目按现有 sort 顺序重算为 1..n
+  const remaining = Object.values(table).sort((a, b) => a.sort - b.sort);
+  remaining.forEach((entry, index) => {
+    entry.sort = index + 1;
+  });
   writeCodeTable(table);
 
   res.json({ success: true, code: 1, message: 'Deleted successfully' });
-});
+})
 
 module.exports = router;
 module.exports.readCodeTable = readCodeTable;
+module.exports.writeCodeTable = writeCodeTable;

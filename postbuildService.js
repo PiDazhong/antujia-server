@@ -22,13 +22,11 @@ const sqlServicePaths = [
   'app.js',
   'checkAuthRoute.js',
   'codeTableRoute.js',
-  'emailRoute.js',
   'fileRoute.js',
-  'logRoute.js',
   'package.json',
 ];
-const remoteSqlPath = '/etc/nginx/service/saudi-server';
-const remoteSqlExecute = 'sudo systemctl restart saudi-server';
+const remoteSqlPath = '/etc/nginx/service/antujia-server';
+const remoteSqlExecute = 'sudo systemctl restart antujia-server';
 
 // 上传文件 并 执行命令
 const uploadAndExecute = async (localPaths, remotePath, sshConfig, execute) => {
