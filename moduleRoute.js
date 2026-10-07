@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { randomUUID } = require('crypto');
-const { resolveModule, BASE_DIR, SHARK_FILE, normalizeSort, validateLangMap, invalidLangMap } = require('./moduleUtil');
+const { resolveModule, BASE_DIR, SHARK_FILE, INFO_FILE, normalizeSort, validateLangMap, invalidLangMap } = require('./moduleUtil');
 const { readCodeTable, writeCodeTable } = require('./codeTableRoute');
 const { authMiddleware } = require('./authUtil');
 
@@ -40,7 +40,7 @@ function writeModuleList(list) {
 }
 
 function getInfoPath(moduleDir) {
-  return path.join(moduleDir, 'info.json');
+  return path.join(moduleDir, INFO_FILE);
 }
 
 function readInfo(moduleDir) {

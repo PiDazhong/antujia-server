@@ -1,10 +1,6 @@
 const path = require('path');
-
-// 模块文本管理文件名（与 info.json 同目录）
-const SHARK_FILE = 'shark.json';
-
-// 支持相对路径（如 DAMONSHOME_DIR=./data），统一解析为绝对路径
-const BASE_DIR = path.resolve(process.env.DAMONSHOME_DIR || '/damonshome');
+// 路径统一在 paths.js 维护；这里转发导出，保持既有引用不变
+const { BASE_DIR, SHARK_FILE, INFO_FILE } = require('./paths');
 
 function validateModuleName(moduleName) {
   return (
@@ -62,6 +58,7 @@ function invalidLangMap(field) {
 module.exports = {
   BASE_DIR,
   SHARK_FILE,
+  INFO_FILE,
   validateModuleName,
   getModuleDir,
   resolveModule,

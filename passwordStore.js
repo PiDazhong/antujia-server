@@ -1,8 +1,5 @@
 const fs = require('fs');
-const path = require('path');
-
-// 登录密码文件，与 codeTable.json 同目录：[{ password, desc }]
-const PASSWORD_FILE = path.join(__dirname, 'password.json');
+const { PASSWORD_FILE } = require('./paths');
 
 // 密码只允许数字、字母、下划线
 const PASSWORD_PATTERN = /^[A-Za-z0-9_]+$/;

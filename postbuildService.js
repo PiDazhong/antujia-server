@@ -29,9 +29,8 @@ const serviceFiles = [
   'moduleUtil.js',
   'passwordRoute.js',
   'passwordStore.js',
-  'password.json',
+  'paths.js',
   'sharkRoute.js',
-  'codeTable.json',
   'package.json',
 ];
 const remoteServicePath = '/etc/nginx/service/damonshome-server';

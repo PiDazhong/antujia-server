@@ -3,13 +3,12 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const { randomUUID } = require('crypto');
-const { resolveModule, validateModuleName, getModuleDir } = require('./moduleUtil');
+const { resolveModule, validateModuleName, getModuleDir, INFO_FILE } = require('./moduleUtil');
 const { authMiddleware } = require('./authUtil');
 
 const router = express.Router();
 
-// 模块清单文件，不属于模块内容文件，查询时排除
-const INFO_FILE = 'info.json';
+// INFO_FILE（模块清单文件）不属于模块内容文件，查询时排除
 
 function validateFilename(filename) {
   return (
