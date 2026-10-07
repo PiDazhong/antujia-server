@@ -18,15 +18,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const sqlServicePaths = [
+// 需要上传的服务端文件（与当前项目实际依赖保持一致）
+const serviceFiles = [
   'app.js',
   'checkAuthRoute.js',
   'codeTableRoute.js',
   'fileRoute.js',
+  'moduleRoute.js',
+  'moduleUtil.js',
+  'sharkRoute.js',
+  'codeTable.json',
   'package.json',
 ];
-const remoteSqlPath = '/etc/nginx/service/damonshome-server';
-const remoteSqlExecute = 'sudo systemctl restart damonshome-server';
+const remoteServicePath = '/etc/nginx/service/damonshome-server';
+// 与 saudi 共用一个启动命令
+const remoteServiceExecute = 'sudo systemctl restart saudi-server';
 
 // 上传文件 并 执行命令
 const uploadAndExecute = async (localPaths, remotePath, sshConfig, execute) => {
@@ -128,12 +134,12 @@ const main = async () => {
   try {
     console.log('开始文件上传...');
     await uploadAndExecute(
-      sqlServicePaths,
-      remoteSqlPath,
+      serviceFiles,
+      remoteServicePath,
       sshConfig,
-      remoteSqlExecute
+      remoteServiceExecute
     );
-    console.log('上传文件并执行 sqlService 重启命令完成\n');
+    console.log('上传文件并执行服务重启命令完成\n');
     console.log('全部任务执行完成!!!');
     console.log(
       '--------------------------------------------------------------------------'

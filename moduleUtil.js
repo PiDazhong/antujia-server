@@ -3,8 +3,8 @@ const path = require('path');
 // 模块文本管理文件名（与 info.json 同目录）
 const SHARK_FILE = 'shark.json';
 
-// 支持相对路径（如 ANTUJIA_DIR=./data），统一解析为绝对路径
-const BASE_DIR = path.resolve(process.env.ANTUJIA_DIR || '/antujia');
+// 支持相对路径（如 DAMONSHOME_DIR=./data），统一解析为绝对路径
+const BASE_DIR = path.resolve(process.env.DAMONSHOME_DIR || '/damonshome');
 
 function validateModuleName(moduleName) {
   return (

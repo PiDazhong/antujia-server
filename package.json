@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "ANTUJIA_DIR=./data nodemon app.js",
-    "dev:win": "set ANTUJIA_DIR=.\\data&& nodemon app.js",
+    "dev": "DAMONSHOME_DIR=./data nodemon app.js",
+    "dev:win": "set DAMONSHOME_DIR=.\\data&& nodemon app.js",
     "build": "node postbuildService.js",
     "commit": "npm run build && git add . && git commit -m \"feat: server开发\" && git push origin main"
   },

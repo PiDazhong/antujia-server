@@ -18,7 +18,7 @@ app.use('/damonshome-server/codeTable', codeTableRoute);
 app.use('/damonshome-server/module', moduleRoute);
 app.use('/damonshome-server/module', sharkRoute);
 
-// 静态文件服务：/icons/<模块名>/<文件名> 映射到数据目录（本地 ./data，线上 /antujia）
+// 静态文件服务：/icons/<模块名>/<文件名> 映射到数据目录（本地 ./data，线上 /damonshome）
 // 拦截 info.json，避免模块清单被公开访问
 app.use('/icons', (req, res, next) => {
   if (req.path.endsWith('.json')) {
