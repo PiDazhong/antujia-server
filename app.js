@@ -3,6 +3,7 @@ const cors = require('cors');
 const fileRoute = require('./fileRoute');
 const checkAuthRoute = require('./checkAuthRoute');
 const codeTableRoute = require('./codeTableRoute');
+const passwordRoute = require('./passwordRoute');
 const moduleRoute = require('./moduleRoute');
 const sharkRoute = require('./sharkRoute');
 const { BASE_DIR } = require('./moduleUtil');
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/damonshome-server/files', fileRoute);
 app.use('/damonshome-server/checkAuth', checkAuthRoute);
 app.use('/damonshome-server/codeTable', codeTableRoute);
+app.use('/damonshome-server/password', passwordRoute);
 app.use('/damonshome-server/module', moduleRoute);
 app.use('/damonshome-server/module', sharkRoute);
 

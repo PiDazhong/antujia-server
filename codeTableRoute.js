@@ -44,8 +44,8 @@ function entryToResponse(code, entry) {
   return { code, value: entry.value, desc: entry.desc, sort: entry.sort };
 }
 
-// 查询码表（含 auth_password 等敏感项，需登录）
-router.post('/query', authMiddleware, (req, res) => {
+// 查询码表
+router.post('/query', (req, res) => {
   const { codes } = req.body;
   if (!Array.isArray(codes)) {
     return res.status(400).json({ success: false, code: 0, message: 'codes must be an array' });
