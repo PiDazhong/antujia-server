@@ -4,6 +4,7 @@ const path = require('path');
 const { randomUUID } = require('crypto');
 const { resolveModule, BASE_DIR, SHARK_FILE, normalizeSort, validateLangMap, invalidLangMap } = require('./moduleUtil');
 const { readCodeTable, writeCodeTable } = require('./codeTableRoute');
+const { authMiddleware } = require('./authUtil');
 
 const router = express.Router();
 
@@ -92,8 +93,8 @@ function loadInfo(moduleDir, res) {
   }
 }
 
-// 创建模块：新建模块目录及 info.json（内容为 []），并登记到码表 moudle 中
-router.post('/create', (req, res) => {
+// 创建模块：新建模块目录及 info.json（内容为 []），并登记到码表 moudle 中（需登录）
+router.post('/create', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
   const { moduleName } = req.body;
@@ -120,8 +121,8 @@ router.post('/create', (req, res) => {
   }
 });
 
-// 删除模块：删除模块目录（含全部内容），并从码表 moudle 中移除该模块名
-router.post('/deleteModule', (req, res) => {
+// 删除模块：删除模块目录（含全部内容），并从码表 moudle 中移除该模块名（需登录）
+router.post('/deleteModule', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -146,8 +147,8 @@ router.post('/queryModuleList', (req, res) => {
   }
 });
 
-// 排序：按 moduleNames 数组顺序重排码表 moudle，未包含的模块保持相对顺序排在末尾
-router.post('/sort', (req, res) => {
+// 排序：按 moduleNames 数组顺序重排码表 moudle，未包含的模块保持相对顺序排在末尾（需登录）
+router.post('/sort', authMiddleware, (req, res) => {
   const { moduleNames } = req.body;
   if (!Array.isArray(moduleNames)) {
     return res.status(400).json({ success: false, code: 0, message: 'moduleNames must be an array' });
@@ -168,8 +169,8 @@ router.post('/sort', (req, res) => {
   }
 });
 
-// 新增条目：sort = 当前最大 sort + 1，fileId 全局唯一
-router.post('/add', (req, res) => {
+// 新增条目：sort = 当前最大 sort + 1，fileId 全局唯一（需登录）
+router.post('/add', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -212,9 +213,9 @@ router.post('/add', (req, res) => {
   }
 });
 
-// 条目排序：按 fileIds 数组顺序重排 info.json，并重算 sort
+// 条目排序：按 fileIds 数组顺序重排 info.json，并重算 sort（需登录）
 // 注意：/sort 已被模块列表排序占用，此处用 /sortItems 避免路由冲突
-router.post('/sortItems', (req, res) => {
+router.post('/sortItems', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -241,8 +242,8 @@ router.post('/sortItems', (req, res) => {
   }
 });
 
-// 删除：移除对应对象、删除 fileUrl 磁盘文件、重算 sort
-router.post('/delete', (req, res) => {
+// 删除：移除对应对象、删除 fileUrl 磁盘文件、重算 sort（需登录）
+router.post('/delete', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -283,8 +284,8 @@ router.post('/delete', (req, res) => {
   }
 });
 
-// 编辑：更新 fileDesc / fileSubDesc
-router.post('/edit', (req, res) => {
+// 编辑：更新 fileDesc / fileSubDesc（需登录）
+router.post('/edit', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 

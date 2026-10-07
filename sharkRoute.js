@@ -8,6 +8,7 @@ const {
   validateLangMap,
   invalidLangMap
 } = require('./moduleUtil');
+const { authMiddleware } = require('./authUtil');
 
 const router = express.Router();
 
@@ -60,8 +61,8 @@ function withFallback(list) {
   });
 }
 
-// 新增文本条目：sharkKey 同模块内唯一，sort = 当前最大 sort + 1；sharkText 可选
-router.post('/shark/add', (req, res) => {
+// 新增文本条目：sharkKey 同模块内唯一，sort = 当前最大 sort + 1；sharkText 可选（需登录）
+router.post('/shark/add', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -97,8 +98,8 @@ router.post('/shark/add', (req, res) => {
   }
 });
 
-// 删除文本条目：按 sharkKey 移除并重算 sort
-router.post('/shark/delete', (req, res) => {
+// 删除文本条目：按 sharkKey 移除并重算 sort（需登录）
+router.post('/shark/delete', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -125,8 +126,8 @@ router.post('/shark/delete', (req, res) => {
   }
 });
 
-// 编辑文本条目：只允许修改 sharkText，sharkKey 不可修改
-router.post('/shark/edit', (req, res) => {
+// 编辑文本条目：只允许修改 sharkText，sharkKey 不可修改（需登录）
+router.post('/shark/edit', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -158,8 +159,8 @@ router.post('/shark/edit', (req, res) => {
   }
 });
 
-// 条目排序：按 sharkKeys 数组顺序重排，未包含的条目保持相对顺序排在末尾
-router.post('/shark/sort', (req, res) => {
+// 条目排序：按 sharkKeys 数组顺序重排，未包含的条目保持相对顺序排在末尾（需登录）
+router.post('/shark/sort', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 

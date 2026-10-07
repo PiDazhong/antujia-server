@@ -21,6 +21,7 @@ const __dirname = path.dirname(__filename);
 // 需要上传的服务端文件（与当前项目实际依赖保持一致）
 const serviceFiles = [
   'app.js',
+  'authUtil.js',
   'checkAuthRoute.js',
   'codeTableRoute.js',
   'fileRoute.js',

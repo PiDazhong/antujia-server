@@ -1,5 +1,6 @@
 const express = require('express');
 const { readCodeTable } = require('./codeTableRoute');
+const { signToken } = require('./authUtil');
 const router = express.Router();
 
 function parseArrayValue(value) {
@@ -31,7 +32,7 @@ router.post('/', (req, res) => {
   const { password } = req.body;
   const authPasswords = getAuthPasswords();
   if (authPasswords.includes(password)) {
-    return res.json({ success: true, code: 1 });
+    return res.json({ success: true, code: 1, data: { token: signToken() } });
   }
   res.status(401).json({ success: false, message: 'Invalid password' });
 });

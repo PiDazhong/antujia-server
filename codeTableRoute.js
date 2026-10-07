@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { authMiddleware } = require('./authUtil');
 
 const router = express.Router();
 // 线上启动脚本注入 ENV=prod，走 /damonshome/codeTable.json；本地开发用服务目录下的 codeTable.json
@@ -43,8 +44,8 @@ function entryToResponse(code, entry) {
   return { code, value: entry.value, desc: entry.desc, sort: entry.sort };
 }
 
-// 查询码表
-router.post('/query', (req, res) => {
+// 查询码表（含 auth_password 等敏感项，需登录）
+router.post('/query', authMiddleware, (req, res) => {
   const { codes } = req.body;
   if (!Array.isArray(codes)) {
     return res.status(400).json({ success: false, code: 0, message: 'codes must be an array' });
@@ -67,8 +68,8 @@ router.post('/query', (req, res) => {
   res.json({ success: true, code: 1, data: result });
 });
 
-// 新增或修改码表（支持单条和批量）
-router.post('/save', (req, res) => {
+// 新增或修改码表（支持单条和批量）（需登录）
+router.post('/save', authMiddleware, (req, res) => {
   let items = req.body.items;
   if (!items) {
     const { code, value, desc, sort } = req.body;
@@ -118,8 +119,8 @@ router.post('/save', (req, res) => {
   res.json({ success: true, code: 1, message: 'Saved successfully' });
 });
 
-// 排序：按 codes 数组顺序重排码表，并重算 sort 为 1..n
-router.post('/sort', (req, res) => {
+// 排序：按 codes 数组顺序重排码表，并重算 sort 为 1..n（需登录）
+router.post('/sort', authMiddleware, (req, res) => {
   const { codes } = req.body;
   if (!Array.isArray(codes)) {
     return res.status(400).json({ success: false, code: 0, message: 'codes must be an array' });
@@ -142,8 +143,8 @@ router.post('/sort', (req, res) => {
   res.json({ success: true, code: 1, message: 'Sorted successfully', data });
 });
 
-// 删除码表
-router.post('/delete', (req, res) => {
+// 删除码表（需登录）
+router.post('/delete', authMiddleware, (req, res) => {
   const { code } = req.body;
   if (code === undefined || code === null || code === '') {
     return res.status(400).json({ success: false, code: 0, message: 'code is required' });

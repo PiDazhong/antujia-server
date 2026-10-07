@@ -4,6 +4,7 @@ const path = require('path');
 const multer = require('multer');
 const { randomUUID } = require('crypto');
 const { resolveModule, validateModuleName, getModuleDir } = require('./moduleUtil');
+const { authMiddleware } = require('./authUtil');
 
 const router = express.Router();
 
@@ -84,8 +85,8 @@ router.post('/list', (req, res) => {
   }
 });
 
-// 删除模块目录下的文件或目录
-router.post('/delete', (req, res) => {
+// 删除模块目录下的文件或目录（需登录）
+router.post('/delete', authMiddleware, (req, res) => {
   const moduleDir = resolveModule(req, res);
   if (!moduleDir) return;
 
@@ -117,8 +118,8 @@ router.post('/delete', (req, res) => {
   }
 });
 
-// 文件上传到模块目录（multipart: moduleName 字段 + file 文件）
-router.post('/upload', (req, res) => {
+// 文件上传到模块目录（multipart: moduleName 字段 + file 文件）（需登录）
+router.post('/upload', authMiddleware, (req, res) => {
   upload.single('file')(req, res, (err) => {
     if (err) {
       if (err.message === 'INVALID_MODULE') {
