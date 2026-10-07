@@ -7,11 +7,11 @@
   "auth_password": {
     "value": "['123456']",
     "desc": "鉴权密码",
-    "sort": 1
+    "sort": 2
   },
   "moudle": {
-    "value": "[\"header\",\"body\",\"footer\",\"nihao222\",\"header2\",\"55566\",\"666777\",\"888999\",\"887778\",\"99999\",\"09990\"]",
+    "value": "[\"header\",\"body\",\"footer\",\"nihao222\",\"header2\",\"55566\",\"666777\",\"888999\",\"887778\",\"99999\",\"09990\",\"testmod\",\"oldmod\",\"ten\"]",
     "desc": "",
-    "sort": 2
+    "sort": 1
   }
 }

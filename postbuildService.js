@@ -25,8 +25,8 @@ const sqlServicePaths = [
   'fileRoute.js',
   'package.json',
 ];
-const remoteSqlPath = '/etc/nginx/service/antujia-server';
-const remoteSqlExecute = 'sudo systemctl restart antujia-server';
+const remoteSqlPath = '/etc/nginx/service/damonshome-server';
+const remoteSqlExecute = 'sudo systemctl restart damonshome-server';
 
 // 上传文件 并 执行命令
 const uploadAndExecute = async (localPaths, remotePath, sshConfig, execute) => {

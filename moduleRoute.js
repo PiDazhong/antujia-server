@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { randomUUID } = require('crypto');
-const { resolveModule, BASE_DIR } = require('./moduleUtil');
+const { resolveModule, BASE_DIR, SHARK_FILE, normalizeSort, validateLangMap, invalidLangMap } = require('./moduleUtil');
 const { readCodeTable, writeCodeTable } = require('./codeTableRoute');
 
 const router = express.Router();
@@ -56,25 +56,6 @@ function writeInfo(moduleDir, data) {
   fs.writeFileSync(getInfoPath(moduleDir), JSON.stringify(data, null, 2));
 }
 
-// 按数组顺序重排 sort 为 1..n
-function normalizeSort(list) {
-  list.forEach((item, index) => {
-    item.sort = index + 1;
-  });
-  return list;
-}
-
-// 校验多语言字段：{ zh, en, ar } 对象，各 key 可选但必须是 string
-function validateLangMap(value, field) {
-  if (value === undefined || value === null) return true;
-  if (typeof value !== 'object' || Array.isArray(value)) return false;
-  return ['zh', 'en', 'ar'].every((key) => value[key] === undefined || typeof value[key] === 'string');
-}
-
-function invalidLangMap(field) {
-  return `${field} must be an object like { zh, en, ar } with string values`;
-}
-
 // 解析 fileUrl 为磁盘绝对路径：
 // 1) 绝对路径且在 BASE_DIR 内，直接使用
 // 2) 否则视为相对 BASE_DIR 的路径（如 '/header/x.png' 或 'header/x.png'）
@@ -122,6 +103,11 @@ router.post('/create', (req, res) => {
     const infoPath = getInfoPath(moduleDir);
     if (!fs.existsSync(infoPath)) {
       fs.writeFileSync(infoPath, '[]');
+    }
+    // 同时创建 shark.json 供文本管理使用
+    const sharkPath = path.join(moduleDir, SHARK_FILE);
+    if (!fs.existsSync(sharkPath)) {
+      fs.writeFileSync(sharkPath, '[]');
     }
     const modules = readModuleList();
     if (!modules.includes(moduleName)) {
