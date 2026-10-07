@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
 const serviceFiles = [
   'app.js',
   'authUtil.js',
-  'checkAuthRoute.js',
+  'loginRoute.js',
   'codeTableRoute.js',
   'fileRoute.js',
   'moduleRoute.js',
@@ -31,6 +31,7 @@ const serviceFiles = [
   'passwordStore.js',
   'paths.js',
   'sharkRoute.js',
+  'verifyRoute.js',
   'package.json',
 ];
 const remoteServicePath = '/etc/nginx/service/damonshome-server';
