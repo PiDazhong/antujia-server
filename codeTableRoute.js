@@ -3,7 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
-const CODE_TABLE_FILE = path.join(__dirname, 'codeTable.json');
+// 线上启动脚本注入 ENV=prod，走 /damonshome/codeTable.json；本地开发用服务目录下的 codeTable.json
+const CODE_TABLE_FILE =
+  process.env.ENV === 'prod' ? '/damonshome/codeTable.json' : path.join(__dirname, 'codeTable.json');
 
 function normalizeEntry(entry) {
   if (entry && typeof entry === 'object' && !Array.isArray(entry)) {
