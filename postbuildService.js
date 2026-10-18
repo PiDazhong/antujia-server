@@ -37,7 +37,7 @@ const serviceFiles = [
 ];
 const remoteServicePath = '/etc/nginx/service/damonshome-server';
 // 与 saudi 共用一个启动命令
-const remoteServiceExecute = 'sudo systemctl restart saudi-server';
+const remoteServiceExecute = 'sudo systemctl restart damons-home';
 
 // 上传文件 并 执行命令
 const uploadAndExecute = async (localPaths, remotePath, sshConfig, execute) => {
